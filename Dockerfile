@@ -83,4 +83,6 @@ COPY --from=builder --chown=nobody:root /app/_build/${MIX_ENV}/rel/alpaca_proxy 
 
 USER nobody
 
+EXPOSE 4000
+
 CMD ["/app/bin/server"]
