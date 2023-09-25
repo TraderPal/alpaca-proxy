@@ -9,6 +9,7 @@ on:
     paths:
     - '//**'
     - '.github/workflows/alpaca-proxy-dev-AutoDeployTrigger-04e75974-d972-41c3-8e6d-eac9c5ab57be.yml'
+    
 
   # Allow manual trigger 
   workflow_dispatch:      
