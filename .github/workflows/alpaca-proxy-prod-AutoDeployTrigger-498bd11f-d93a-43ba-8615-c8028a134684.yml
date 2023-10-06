@@ -16,6 +16,8 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    permissions: 
+      id-token: write #This is required for requesting the OIDC JWT Token
 
     steps:
       - name: Checkout to the branch
@@ -36,7 +38,7 @@ jobs:
           containerAppName: alpaca-proxy-prod
           resourceGroup: traderpal-prod
           imageToBuild: tpalprodcontainers.azurecr.io/alpaca-proxy-prod:${{ github.sha }}
-          
+          dockerfilePath: Dockerfile
 
      
 
