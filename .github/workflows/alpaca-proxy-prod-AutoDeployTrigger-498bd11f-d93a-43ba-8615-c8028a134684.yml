@@ -1,0 +1,42 @@
+name: Trigger auto deployment for alpaca-proxy-prod
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ main ]
+    paths:
+    - '**'
+    - '.github/workflows/alpaca-proxy-prod-AutoDeployTrigger-498bd11f-d93a-43ba-8615-c8028a134684.yml'
+
+  # Allow manual trigger 
+  workflow_dispatch:
+      
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.ALPACAPROXYPROD_AZURE_CREDENTIALS }}
+
+      - name: Build and push container image to registry
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          appSourcePath: ${{ github.workspace }} 
+          registryUrl: tpalprodcontainers.azurecr.io
+          registryUsername: ${{ secrets.ALPACAPROXYPROD_REGISTRY_USERNAME }}
+          registryPassword: ${{ secrets.ALPACAPROXYPROD_REGISTRY_PASSWORD }}
+          containerAppName: alpaca-proxy-prod
+          resourceGroup: traderpal-prod
+          imageToBuild: tpalprodcontainers.azurecr.io/alpaca-proxy-prod:${{ github.sha }}
+          
+
+     
+
